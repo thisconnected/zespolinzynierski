@@ -1,0 +1,20 @@
+#+OPTIONS: toc:nil
+#+TITLE: Grupa 2 - przedstawienie tematu
+#+AUTHOR: Patryk Kaniewski, Dominik Gandziarek, Jakub Caban
+
+* System rejestracji zachorowan (przyklad koronawirus)
+** baza koronawirus (mysql?) 
++ ludzie (dane osobowe)
++ zachorowania (stan pacjeta)
++ kwarantanna (od kiedy do kiedy)
+** aplikacja PHP do wprowadzania/wyszukiwania danych
+jakies UI dla osoby wprowadzajacej dane, webstack + php do danych
+** jakis system autoryzacji
+raczej kerberos czy cos a nie wlasny
+** jakas aplikacja do generowania grafow i statystyk 
+(moze json/csv a pozniej jakies biblioteki/wlasne do generowania grafow)
+** system backupow
+najpierw jakies proste pozniej pomyslec
+** META: kontrola wersji (git)                                    :noexport:
+musi byc dla projektu
+
