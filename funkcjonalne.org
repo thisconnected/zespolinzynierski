@@ -1,0 +1,57 @@
+#+OPTIONS: toc:nil
+#+TITLE: Projekt sieci i systemów korporacyjnej firmy telemarketingowej
+
+#+AUTHOR: Patryk Kaniewski
+#+AUTHOR: Jakub Caban
+#+AUTHOR: Dominik Gandziarek
+
+* Wymagania Funkcjonalne
+** Ogolne
++ Dostępność sieci w każdym pomieszczeniu firmy
+  - siec kablowa dla każdego stanowiska
+  - siec bezprzewodowa na sali konferencyjnej
+  - siec bezprzewodowa dla gosci (konferencja)
++ Wysoka dostępność sieci (serwery)
++ Zapewnienie redundandej komunikacji miedzy gałęziami sieci
++ mozliwosc zarządzania usługami dostarczonymi za pomoca technologi docker
+  - uruchomienie app1 + db1 (fikcjonalna usluga - zaprezentowac mozliwosc)
++ mozliwosc zarzadzania usługami za pomoca wirtualizacji
+  - uruchomienie app2 + db2 (fikcjonalna usluga - zaprezentowac mozliwosc)
++ dostęp do sieci za pomoca nazw domen
+** Monitoring sieci
++ Administrator ma dostęp do statystyk użytkowania systemów
++ Administrator dostaje automatyczne powiadomienia przy dużych zmianiach w pracy
+** Autoryzacja na poziomie sieci
++ użytkownik siadając do jakiegokolwiek biurka loguje się do sieci
++ ograniczenie dostępu do czesci sieci nieuprawnionym uzytkownikom (zarzad, pracownik, administrator, gosc konferencyjny)
+
+
+
+
+
+
+
+
+
+
+
+* old                                                              :noexport:
+Wykonanie planu budynku z szczegółowym uwzględnieniem materiałów budowlanych,      rozmieszczeniem okien, drzwi
+- Rozplanowanie sieci
+- Zbadanie przepustowości łącza PO CHUJ
+- Utworzenie projektu sieci
+- Wykonanie pomiarów pokrycia zasięgowego (propagacja fal)
+- Wyznaczenie miejsc, w których będą znajdowały się punkty dostępowe
+- Rozplanowanie topologii fizycznej i logicznej sieci
+- Projekt centrali telefonicznej (VoIP) RACZEJ NIE!!!
+- Uruchomienie monitoringu ruchu sieciowego przy użyciu istniejących programów
+* old2                                                             :noexport:
+-Sieć musi być dostępna bez ograniczeń w każdym pomieszczeniu firmy 
+-Sieć musi być zabezpieczona przed nieautoryzowanym dostępem z zewnątrz 
+-Schemat budynku musi uwzględniać powierzchnię pokoi pracowniczych, wymiary ścian
+-Punkty dostępowe muszą być rozmieszczone w jak najoptymalniejszym miejscu, z którego będą obejmowały największy możliwy obszar 
+-Naniesienie na plan budynku topologii fizycznej sieci 
+- Zamodelowanie topologii logicznej sieci z uwzględnieniem adresacji i sposobem komunikacji między urządzeniami
+- Zapewnienie monitoringu sieci
+-Uruchomienie serwera do przechowywanie danych 
+-Zapewnienie komunikacji między poszczególnymi częściami systemu 
