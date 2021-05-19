@@ -23,8 +23,17 @@
 + Administrator dostaje automatyczne powiadomienia przy dużych zmianiach w pracy
 ** Autoryzacja na poziomie sieci
 + użytkownik siadając do jakiegokolwiek biurka loguje się do sieci
-+ ograniczenie dostępu do czesci sieci nieuprawnionym uzytkownikom (zarzad, pracownik, administrator, gosc konferencyjny)
-
++ ograniczenie dostępu do czesci sieci nieuprawnionym uzytkownikom (zarzad, pracownik, administrator, gosc konferencyjny
+** DHCP
++ usługa musi być redundantna
++ jeśli jeden serwer DHCP ulegnie awarii, drugi serwer zast�pczy przejmuje jego zadania
++ Adresy IP musz� być rozdzielane z określonej puli adresów.
++ Serwer zastępczy (slave) nasłuchuje na odpowiednim interfejsie sieciowym, je�li nie otrzymuje odpowiedzi
++ od serwera podstawowego (master) zaczyna rozdawać hostom adresy.
+** DNS
++ usługa musi umo�liwia� translacje nazw domenowych na adresy IP jak i odwrotnie (strefy wyszukiwania wstecz i do przodu);
++ użytkownik, kt�ry siada do swojego stanowiska musi mieć umożliwione połaczenie ze stronami internetowymi
++ zarówno poprzez adresy IP jak i nazwy domenowe; 
 
 
 
