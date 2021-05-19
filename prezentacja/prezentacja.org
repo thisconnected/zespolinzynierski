@@ -30,7 +30,7 @@
   - sieć bezprzewodowa dla gosci (konferencja)
 + Wysoka dostępność systemów
 + Zapewnienie redundantnej komunikacji miedzy gałęziami sieci
-+ Możliwość zarządzania usługami dostarczonymi za pomoca technologii docker
++ Możliwość zarządzania usługami dostarczonymi za pomoca technologii Docker
   - uruchomienie app1 + db1
 + Mozliwosc zarzadzania usługami dostarczonymi za pomoca wirtualizacji
   - uruchomienie app2 + db2
@@ -39,24 +39,26 @@
 + Administrator ma dostęp do statystyk użytkowania systemów
 + Administrator dostaje automatyczne powiadomienia przy dużych zmianiach w pracy
 *** Autoryzacja na poziomie sieci
-+ użytkownik siadając do jakiegokolwiek biurka loguje się do sieci
-+ ograniczenie dostępu do czesci sieci nieuprawnionym uzytkownikom (zarzad, pracownik, administrator, gosc konferencyjny
++ Użytkownik siadając do jakiegokolwiek biurka loguje się do sieci
++ Ograniczenie dostępu do czesci sieci nieuprawnionym uzytkownikom (zarzad, pracownik, administrator, gość konferencyjny)
 ** Wymagania Funkcjonalne (kont.)
 *** DHCP
-+ usługa musi być redundantna
-+ jeśli jeden serwer DHCP ulegnie awarii, drugi serwer zast�pczy przejmuje jego zadania
-+ Adresy IP musz� być rozdzielane z określonej puli adresów.
++ Usługa musi być redundantna
++ Jeśli jeden serwer DHCP ulegnie awarii, drugi serwer zast�pczy przejmuje jego zadania
++ Adresy IP muszą być rozdzielane z określonej puli adresów.
 + Serwer zastępczy (slave) nasłuchuje na odpowiedwnim interfejsie sieciowym, je�li nie otrzymuje odpowiedzi
-+ od serwera podstawowego (master) zaczyna rozdawać hostom adresy.
++ Od serwera podstawowego (master) zaczyna rozdawać hostom adresy.
 *** DNS
-+ usługa musi umo�liwia� translacje nazw domenowych na adresy IP jak i odwrotnie (strefy wyszukiwania wstecz i do przodu);
-+ użytkownik, kt�ry siada do swojego stanowiska musi mieć umożliwione połaczenie ze stronami internetowymi
-+ zarówno poprzez adresy IP jak i nazwy domenowe;
++ Usługa musi umożliwia translację nazw domenowych na adresy IP jak i odwrotnie (strefy wyszukiwania wstecz i do przodu);
++ Użytkownik, który siada do swojego stanowiska musi mieć umożliwione połaczenie ze stronami internetowymi
++ Zarówno poprzez adresy IP jak i nazwy domenowe;
 * Sieć
 ** Plan bundynku
 [[./data/siec/plan_budynku.png]]
 ** Plan fizyczny sieci
 [[./data/siec/plan_fizyczny.png]]
+** Model Propagacyjny
+[[./data/siec/wifi.png]]
 ** Plan logiczny sieci
 [[./data/siec/network_diagram_clean.png]]
 ** Architektura serwerowa
@@ -87,7 +89,22 @@
    ?>
 #+end_src
 ** App1 + db1
+
+
+*** App1                                                         :B_column:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :BEAMER_col: 0.5
+    :END:
+
 [[./data/app/app1.png]]
+*** App1                                                         :B_column:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :BEAMER_col: 0.5
+    :END:
+    
+    [[./data/app/app1status.png]]
 ** App2
 \TINY
 #+begin_src php
@@ -124,13 +141,145 @@ Zabbix jest rozwiązanie open-source (GPLv2) do monitorowania dużej ilości kom
 + usług
 ** Zabbix
 [[./data/zabbix/homepage.png]]
+** Triggery
+[[./data/zabbix/trigger2.png]]
 ** Powiadomienia
-[[./data/zabbix/script.png]]
+#+begin_src bash
+#!/bin/bash
+# uzywajac ssmtp via mailserver
+echo "sending mail" > /var/log/zabbix/custom.log
+echo "$3" | /usr/bin/mail -s "$2" $1
+
+exit 0
+#+end_src
 ** Powiadomienia (kont.)
+*** Media type                                                   :B_column:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :BEAMER_col: 0.55
+    :END:
 [[./data/zabbix/trigger.png]]
+
+*** Efekt                                                        :B_column:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :BEAMER_col: 0.55
+    :END:
+[[./data/zabbix/mail.png]]
+
+** Powiadomienia (kont.)
+*** notify-send                                                  :B_column:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :BEAMER_col: 0.6
+    :END:
+
+#+begin_src bash
+#!/bin/bash
+
+ssh 192.168.200.1 "notify-send $1"
+#+end_src
+
+*** Efekt                                                        :B_column:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :BEAMER_col: 0.4
+    :END:
+    [[./data/zabbix/notify-send.png]]
 * Autoryzacja na poziomie sieci
 ** 802.1x
 * DHCP
 ** DHCP
+*** Master                                                       :B_column:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :BEAMER_col: 0.55
+    :END:
+
+[[./data/dhcp/5_master.png]]
+*** Slave                                                        :B_column:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :BEAMER_col: 0.55
+    :END:
+[[./data/dhcp/5_slave.png]]
+
+*** lease
+[[./data/dhcp/5_small.png]]
+** Failover
+Do poprawnego działania usługi DHCP Failover wymagane jest aby obydwa serwery miały ustawione takie same daty oraz czas:
+[[./data/dhcp/6_czas.png]]
+** 
+*** Slave                                                        :B_column:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :BEAMER_col: 0.55
+    :END:
+
+[[./data/dhcp/7_master.png]]
+*** Master                                                       :B_column:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :BEAMER_col: 0.55
+    :END:
+[[./data/dhcp/7_slave.png]]
+** klient
+*** interface                                                    :B_column:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :BEAMER_col: 0.55
+    :END:
+
+[[./data/dhcp/8_1.png]]
+*** ip a                                                         :B_column:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :BEAMER_col: 0.55
+    :END:
+[[./data/dhcp/8_2.png]]
+** DHCP leases
+Jak można zobaczyć dane zostaly zsynchronizowane na obydwu serwerach
+*** Master                                                       :B_column:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :BEAMER_col: 0.55
+    :END:
+
+[[./data/dhcp/9_master.png]]
+*** Slave                                                        :B_column:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :BEAMER_col: 0.55
+    :END:
+[[./data/dhcp/9_slave.png]]
+** 
+[[./data/dhcp/10_slave.png]]
+** 
+*** Master                                                       :B_column:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :BEAMER_col: 0.55
+    :END:
+
+[[./data/dhcp/11_master.png]]
+*** Slave                                                        :B_column:
+    :PROPERTIES:
+    :BEAMER_env: block
+    :BEAMER_col: 0.55
+    :END:
+[[./data/dhcp/11_slave.png]]
 * DNS
-** DNS
+** Tworzenie Forward i Reverse Zone w pliku named.conf.local na Master
+[[./data/dns/1.png]]
+** Tworzenie Forward Zone na Master
+[[./data/dns/2.png]]
+** Tworzenie Reverse Zone na Master
+[[./data/dns/3.png]]
+** Tworzenie Forward i Reverse Zone w pliku named.conf.local na Slave
+[[./data/dns/4.png]]
+** Status bind9 (DNS) Master
+[[./data/dns/5.png]]
+** Status bind9 (DNS) Slave
+[[./data/dns/6.png]]
+* Podsumowanie
+** Podsumowanie
