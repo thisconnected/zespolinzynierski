@@ -1,0 +1,136 @@
+#+TITLE: Projekt sieci i systemów korporacyjnej firmy telemarketingowej
+#+AUTHOR: Patryk Kaniewski,
+#+AUTHOR: Dominik Gandziarek,
+#+AUTHOR: Jakub Caban
+
+#+EMAIL: thisconnected@gmail.com
+#+DATE: 2021-05-19
+#+CREATOR: PUSB Skierniewice
+
+#+DESCRIPTION: test
+#+KEYWORDS:
+#+LANGUAGE: pl
+#+latex_class: beamer
+#+OPTIONS: H:2 toc:nil num:t
+#+columns: %45ITEM %10BEAMER_env(Env) %10BEAMER_act(Act) %4BEAMER_col(Col) %8BEAMER_opt(Opt)
+#+beamer_theme: Dresden
+
+#+beamer_color_theme: sidebartab
+#+beamer_font_theme:
+#+beamer_inner_theme:
+#+beamer_outer_theme:
+#+beamer_header:
+
+* Wstęp
+** Wymagania Funkcjonalne
+*** Ogólne
++ Dostępność sieci w każdym pomieszczeniu firmy
+  - sieć kablowa dla każdego stanowiska
+  - sieć bezprzewodowa na sali konferencyjnej
+  - sieć bezprzewodowa dla gosci (konferencja)
++ Wysoka dostępność systemów
++ Zapewnienie redundantnej komunikacji miedzy gałęziami sieci
++ Możliwość zarządzania usługami dostarczonymi za pomoca technologii docker
+  - uruchomienie app1 + db1
++ Mozliwosc zarzadzania usługami dostarczonymi za pomoca wirtualizacji
+  - uruchomienie app2 + db2
+** Wymagania Funkcjonalne (kont.)
+*** Monitoring sieci
++ Administrator ma dostęp do statystyk użytkowania systemów
++ Administrator dostaje automatyczne powiadomienia przy dużych zmianiach w pracy
+*** Autoryzacja na poziomie sieci
++ użytkownik siadając do jakiegokolwiek biurka loguje się do sieci
++ ograniczenie dostępu do czesci sieci nieuprawnionym uzytkownikom (zarzad, pracownik, administrator, gosc konferencyjny
+** Wymagania Funkcjonalne (kont.)
+*** DHCP
++ usługa musi być redundantna
++ jeśli jeden serwer DHCP ulegnie awarii, drugi serwer zast�pczy przejmuje jego zadania
++ Adresy IP musz� być rozdzielane z określonej puli adresów.
++ Serwer zastępczy (slave) nasłuchuje na odpowiedwnim interfejsie sieciowym, je�li nie otrzymuje odpowiedzi
++ od serwera podstawowego (master) zaczyna rozdawać hostom adresy.
+*** DNS
++ usługa musi umo�liwia� translacje nazw domenowych na adresy IP jak i odwrotnie (strefy wyszukiwania wstecz i do przodu);
++ użytkownik, kt�ry siada do swojego stanowiska musi mieć umożliwione połaczenie ze stronami internetowymi
++ zarówno poprzez adresy IP jak i nazwy domenowe;
+* Sieć
+** Plan bundynku
+[[./data/siec/plan_budynku.png]]
+** Plan fizyczny sieci
+[[./data/siec/plan_fizyczny.png]]
+** Plan logiczny sieci
+[[./data/siec/network_diagram_clean.png]]
+** Architektura serwerowa
+[[./data/siec/server_diagram.png]]
+* App1/2
+** App1
+\TINY
+#+begin_src php
+   <?php
+   $host = '192.168.200.132';
+   $db   = 'lab3'; $user = 'admin'; $pass = 'pwsz';
+   $port = '3306'; $charset = 'utf8';
+   $options = [
+       \PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
+       \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
+       \PDO::ATTR_EMULATE_PREPARES   => false,
+   ];
+   $dsn = "mysql:host=$host;dbname=$db;charset=$charset;port=$port";
+   try {
+        $pdo = new \PDO($dsn, $user, $pass, $options);
+   } catch (\PDOException $e) {
+        throw new \PDOException($e->getMessage(), (int)$e->getCode());
+   }
+   $stmt = $pdo->query("SELECT * FROM aktorzy");
+   while ($row = $stmt->fetch()) {
+       echo $row['nazwisko']."<br />\n";
+   }
+   ?>
+#+end_src
+** App1 + db1
+[[./data/app/app1.png]]
+** App2
+\TINY
+#+begin_src php
+   <?php
+   $host = '192.168.200.145';
+   $db   = 'lab3'; $user = 'admin'; $pass = 'pwsz';
+   $port = '3306'; $charset = 'utf8';
+   $options = [
+       \PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
+       \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
+       \PDO::ATTR_EMULATE_PREPARES   => false,
+   ];
+   $dsn = "mysql:host=$host;dbname=$db;charset=$charset;port=$port";
+   try {
+        $pdo = new \PDO($dsn, $user, $pass, $options);
+   } catch (\PDOException $e) {
+        throw new \PDOException($e->getMessage(), (int)$e->getCode());
+   }
+   $stmt = $pdo->query("SELECT * FROM filmy");
+   while ($row = $stmt->fetch()) {
+       echo $row['tytul']." ".$row['rok']."<br />\n";
+   }
+   ?>
+   #+end_src
+** App2 + db2
+[[./data/app/app2.png]]
+* Monitoring sieci
+** Zabbix
+Zabbix jest rozwiązanie open-source (GPLv2) do monitorowania dużej ilości komponentów sieci komputerowej w tym:
++ sieci
++ urządzeń sieciowych
++ stacji roboczych
++ serwerów
++ usług
+** Zabbix
+[[./data/zabbix/homepage.png]]
+** Powiadomienia
+[[./data/zabbix/script.png]]
+** Powiadomienia (kont.)
+[[./data/zabbix/trigger.png]]
+* Autoryzacja na poziomie sieci
+** 802.1x
+* DHCP
+** DHCP
+* DNS
+** DNS
